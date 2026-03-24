@@ -6,13 +6,13 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 # Explicit request schema for Iris dataset (4 features)
-class IrisRequest(BaseModel):
+class BreastCancerRequest(BaseModel):
     sepal_length: float
     sepal_width: float
     petal_length: float
     petal_width: float
 
-def create_app(model_path: str = "models/iris_model.pkl"):
+def create_app(model_path: str = "models/breast_cancer_model.pkl"):
     """
     Creates a FastAPI app that serves predictions for the Iris model.
 
