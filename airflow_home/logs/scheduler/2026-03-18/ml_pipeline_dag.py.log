@@ -1,0 +1,15 @@
+[2026-03-18T17:29:00.280-0400] {processor.py:186} INFO - Started process (PID=50342) to work on /Users/cristian/Desktop/Repos/ml_ops_repos/lab4_model_training/dags/ml_pipeline_dag.py
+[2026-03-18T17:29:00.280-0400] {processor.py:914} INFO - Processing file /Users/cristian/Desktop/Repos/ml_ops_repos/lab4_model_training/dags/ml_pipeline_dag.py for tasks to queue
+[2026-03-18T17:29:00.281-0400] {logging_mixin.py:190} INFO - [2026-03-18T17:29:00.281-0400] {dagbag.py:588} INFO - Filling up the DagBag from /Users/cristian/Desktop/Repos/ml_ops_repos/lab4_model_training/dags/ml_pipeline_dag.py
+[2026-03-18T17:29:01.540-0400] {processor.py:925} INFO - DAG(s) 'ml_pipeline' retrieved from /Users/cristian/Desktop/Repos/ml_ops_repos/lab4_model_training/dags/ml_pipeline_dag.py
+[2026-03-18T17:29:01.603-0400] {logging_mixin.py:190} INFO - [2026-03-18T17:29:01.602-0400] {override.py:1930} INFO - Created Permission View: can edit on DAG:ml_pipeline
+[2026-03-18T17:29:01.606-0400] {logging_mixin.py:190} INFO - [2026-03-18T17:29:01.606-0400] {override.py:1930} INFO - Created Permission View: can delete on DAG:ml_pipeline
+[2026-03-18T17:29:01.608-0400] {logging_mixin.py:190} INFO - [2026-03-18T17:29:01.608-0400] {override.py:1930} INFO - Created Permission View: can read on DAG:ml_pipeline
+[2026-03-18T17:29:01.611-0400] {logging_mixin.py:190} INFO - [2026-03-18T17:29:01.610-0400] {override.py:1930} INFO - Created Permission View: can delete on DAG Run:ml_pipeline
+[2026-03-18T17:29:01.612-0400] {logging_mixin.py:190} INFO - [2026-03-18T17:29:01.612-0400] {override.py:1930} INFO - Created Permission View: can create on DAG Run:ml_pipeline
+[2026-03-18T17:29:01.615-0400] {logging_mixin.py:190} INFO - [2026-03-18T17:29:01.615-0400] {override.py:1930} INFO - Created Permission View: menu access on DAG Run:ml_pipeline
+[2026-03-18T17:29:01.619-0400] {logging_mixin.py:190} INFO - [2026-03-18T17:29:01.619-0400] {override.py:1930} INFO - Created Permission View: can read on DAG Run:ml_pipeline
+[2026-03-18T17:29:01.619-0400] {logging_mixin.py:190} INFO - [2026-03-18T17:29:01.619-0400] {dag.py:3239} INFO - Sync 1 DAGs
+[2026-03-18T17:29:01.623-0400] {logging_mixin.py:190} INFO - [2026-03-18T17:29:01.623-0400] {dag.py:3262} INFO - Creating ORM DAG for ml_pipeline
+[2026-03-18T17:29:01.624-0400] {logging_mixin.py:190} INFO - [2026-03-18T17:29:01.623-0400] {dag.py:4180} INFO - Setting next_dagrun for ml_pipeline to None, run_after=None
+[2026-03-18T17:29:01.629-0400] {processor.py:208} INFO - Processing /Users/cristian/Desktop/Repos/ml_ops_repos/lab4_model_training/dags/ml_pipeline_dag.py took 1.351 seconds
