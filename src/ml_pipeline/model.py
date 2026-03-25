@@ -2,6 +2,7 @@ import os
 import json
 import joblib
 import pandas as pd
+from datetime import datetime
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
@@ -43,8 +44,8 @@ def evaluate_model(
     )
 
     clf = joblib.load(model_path)
-    predictionss = clf.predict(X_test)
-    accuracy = accuracy_score(y_test, preds)
+    predictions = clf.predict(X_test)
+    accuracy = accuracy_score(y_test, predictions)
 
     metrics = {"accuracy": round(accuracy, 4)}
 
@@ -54,3 +55,29 @@ def evaluate_model(
 
     print(f"[ml_pipeline.model] Metrics saved to {metrics_path}: {metrics}")
     return metrics
+
+
+def save_metadata(
+    accuracy: float,
+    model_version: str | None = None,
+    dataset: str = "breast_cancer",
+    model_type: str = "logistic_regression",
+    metadata_path: str = "models/metadata.json",
+) -> dict:
+    """Generate a version identifier and save model metadata to JSON."""
+    if model_version is None:
+        model_version = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    metadata = {
+        "model_version": model_version,
+        "dataset": dataset,
+        "model_type": model_type,
+        "accuracy": round(accuracy, 4),
+    }
+
+    os.makedirs(os.path.dirname(metadata_path), exist_ok=True)
+    with open(metadata_path, "w") as f:
+        json.dump(metadata, f, indent=2)
+
+    print(f"[ml_pipeline.model] Metadata saved to {metadata_path}: {metadata}")
+    return metadata

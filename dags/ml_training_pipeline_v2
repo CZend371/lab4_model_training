@@ -7,7 +7,8 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__), "../src"))
 
 from ml_pipeline.data import generate_data, load_data
-from ml_pipeline.model import train_model, evaluate_model
+import json
+from ml_pipeline.model import train_model, evaluate_model, save_metadata
 
 default_args = {"owner": "airflow", "retries": 1}
 
@@ -53,6 +54,21 @@ with DAG(
         },
     )
 
+    def save_metadata_wrapper(metrics_path: str, **kwargs):
+        version = kwargs["execution_date"].strftime("%Y%m%d_%H%M%S")
+        with open(metrics_path) as f:
+            metrics = json.load(f)
+        save_metadata(accuracy=metrics["accuracy"], model_version=version)
+
+    metadata_task = PythonOperator(
+        task_id="save_metadata",
+        python_callable=save_metadata_wrapper,
+        op_kwargs={
+            "metrics_path": "models/metrics.json",
+        },
+        provide_context=True,
+    )
+
     def promote_model_wrapper(model_path: str):
         return promote_model(model_path)
 
@@ -64,4 +80,4 @@ with DAG(
         },
     )
 
-    generate_task >> train_task >> evaluate_task >> promote_task
+    generate_task >> train_task >> evaluate_task >> metadata_task >> promote_task
