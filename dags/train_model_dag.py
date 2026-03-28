@@ -28,7 +28,7 @@ with DAG(
         task_id="train_model",
         python_callable=train_model_wrapper,
         op_kwargs={
-            "data_path": "data/iris.csv",
-            "model_path": "models/iris_model.pkl",
+            "data_path": "data/breast_cancer.csv",
+            "model_path": "models/breast_cancer_model.pkl",
         },
     )

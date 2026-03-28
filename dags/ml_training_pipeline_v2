@@ -36,7 +36,7 @@ with DAG(
         python_callable=train_model_wrapper,
         op_kwargs={
             "data_path": "data/breast_cancer.csv",
-            "model_path": "models/iris_model.pkl",
+            "model_path": "models/breast_cancer_model.pkl",
         },
     )
 
@@ -49,7 +49,7 @@ with DAG(
         python_callable=evaluate_model_wrapper,
         op_kwargs={
             "data_path": "data/breast_cancer.csv",
-            "model_path": "models/iris_model.pkl",
+            "model_path": "models/breast_cancer_model.pkl",
             "metrics_path": "models/metrics.json",
         },
     )
@@ -76,7 +76,7 @@ with DAG(
         task_id="promote_model",
         python_callable=promote_model_wrapper,
         op_kwargs={
-            "model_path": "models/iris_model.pkl",
+            "model_path": "models/breast_cancer_model.pkl",
             "metrics_path": "models/metrics.json",
             "metadata_path": "models/metadata.json",
         },
