@@ -17,13 +17,15 @@ with DAG(
     catchup=False,
 ) as dag:
 
-    def promote_model_wrapper(model_path: str):
-        return promote_model(model_path)
+    def promote_model_wrapper(model_path: str, metrics_path: str, metadata_path: str):
+        return promote_model(model_path, metrics_path, metadata_path)
 
     promote_task = PythonOperator(
         task_id="promote_model",
         python_callable=promote_model_wrapper,
         op_kwargs={
             "model_path": "models/breast_cancer_model.pkl",
+            "metrics_path": "models/metrics.json",
+            "metadata_path": "models/metadata.json",
         },
     )

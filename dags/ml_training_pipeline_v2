@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "../src"))
 
 from ml_pipeline.data import generate_data, load_data
 import json
-from ml_pipeline.model import train_model, evaluate_model, save_metadata
+from ml_pipeline.model import train_model, evaluate_model, save_metadata, promote_model
 
 default_args = {"owner": "airflow", "retries": 1}
 
@@ -69,14 +69,16 @@ with DAG(
         provide_context=True,
     )
 
-    def promote_model_wrapper(model_path: str):
-        return promote_model(model_path)
+    def promote_model_wrapper(model_path: str, metrics_path: str, metadata_path: str):
+        return promote_model(model_path, metrics_path, metadata_path)
 
     promote_task = PythonOperator(
         task_id="promote_model",
         python_callable=promote_model_wrapper,
         op_kwargs={
             "model_path": "models/iris_model.pkl",
+            "metrics_path": "models/metrics.json",
+            "metadata_path": "models/metadata.json",
         },
     )
 
