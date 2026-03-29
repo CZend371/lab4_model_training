@@ -5,7 +5,14 @@ set -euo pipefail
 # Airflow Lab Setup Script (project-isolated)
 # -------------------------------------------
 
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if [[ -n "${BASH_SOURCE[0]}" ]]; then
+  PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+else
+  PROJECT_ROOT="$(pwd)"
+fi
+
+
 VENV_DIR="$PROJECT_ROOT/venv"
 AIRFLOW_HOME_DIR="$PROJECT_ROOT/airflow_home"
 
