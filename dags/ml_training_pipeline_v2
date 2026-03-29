@@ -1,0 +1,85 @@
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from datetime import datetime
+import sys, os
+
+# Add src to path so DAGs can import ml_pipeline
+sys.path.append(os.path.join(os.path.dirname(__file__), "../src"))
+
+from ml_pipeline.data import generate_data, load_data
+import json
+from ml_pipeline.model import train_model, evaluate_model, save_metadata, promote_model
+
+default_args = {"owner": "airflow", "retries": 1}
+
+with DAG(
+    dag_id="ml_training_pipeline_v2",
+    default_args=default_args,
+    description="Pipeline: generate data -> train model -> evaluate model -> promote model",
+    schedule_interval=None,
+    start_date=datetime(2025, 1, 1),
+    catchup=False,
+) as dag:
+
+    generate_task = PythonOperator(
+        task_id="generate_data",
+        python_callable=generate_data,
+        op_kwargs={"output_path": "data/breast_cancer.csv"},
+    )
+
+    def train_model_wrapper(data_path: str, model_path: str):
+        df = load_data(data_path)
+        return train_model(df, model_path)
+
+    train_task = PythonOperator(
+        task_id="train_model",
+        python_callable=train_model_wrapper,
+        op_kwargs={
+            "data_path": "data/breast_cancer.csv",
+            "model_path": "models/breast_cancer_model.pkl",
+        },
+    )
+
+    def evaluate_model_wrapper(data_path: str, model_path: str, metrics_path: str):
+        df = load_data(data_path)
+        return evaluate_model(df, model_path, metrics_path)
+
+    evaluate_task = PythonOperator(
+        task_id="evaluate_model",
+        python_callable=evaluate_model_wrapper,
+        op_kwargs={
+            "data_path": "data/breast_cancer.csv",
+            "model_path": "models/breast_cancer_model.pkl",
+            "metrics_path": "models/metrics.json",
+        },
+    )
+
+    def save_metadata_wrapper(metrics_path: str, **kwargs):
+        version = kwargs["execution_date"].strftime("%Y%m%d_%H%M%S")
+        with open(metrics_path) as f:
+            metrics = json.load(f)
+        save_metadata(accuracy=metrics["accuracy"], model_version=version)
+
+    metadata_task = PythonOperator(
+        task_id="save_metadata",
+        python_callable=save_metadata_wrapper,
+        op_kwargs={
+            "metrics_path": "models/metrics.json",
+        },
+        provide_context=True,
+    )
+
+    def promote_model_wrapper(model_path: str, metrics_path: str, metadata_path: str):
+        return promote_model(model_path, metrics_path, metadata_path)
+
+    promote_task = PythonOperator(
+        task_id="promote_model",
+        python_callable=promote_model_wrapper,
+        op_kwargs={
+            "model_path": "models/breast_cancer_model.pkl",
+            "metrics_path": "models/metrics.json",
+            "metadata_path": "models/metadata.json",
+        },
+    )
+
+    generate_task >> train_task >> evaluate_task >> metadata_task >> promote_task
