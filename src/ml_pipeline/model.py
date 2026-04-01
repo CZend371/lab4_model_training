@@ -7,6 +7,7 @@ from datetime import datetime
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
+from typing import Optional
 
 def train_model(df: pd.DataFrame, model_path: str = "models/breast_cancer_model.pkl") -> float:
     """Train a logistic regression classifier and save it."""
@@ -60,7 +61,7 @@ def evaluate_model(
 
 def save_metadata(
     accuracy: float,
-    model_version: str | None = None,
+    model_version: Optional[str] = None,
     dataset: str = "breast_cancer",
     model_type: str = "logistic_regression",
     metadata_path: str = "models/metadata.json",
