@@ -12,6 +12,14 @@ else
   PROJECT_ROOT="$(pwd)"
 fi
 
+# Load environment variables from .env if it exists
+if [[ -f "$PROJECT_ROOT/.env" ]]; then
+  set -o allexport
+  source "$PROJECT_ROOT/.env"
+  set +o allexport
+  echo "Loaded .env from $PROJECT_ROOT/.env"
+fi
+
 
 VENV_DIR="$PROJECT_ROOT/venv"
 AIRFLOW_HOME_DIR="$PROJECT_ROOT/airflow_home"
