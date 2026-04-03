@@ -1,0 +1,9 @@
+# Airflow runtime logs and config dumps
+AIRFLOW__SCHEDULER__CHILD_PROCESS_LOG_DIRECTORY/
+AIRFLOW__LOGGING__DAG_PROCESSOR_MANAGER_LOG_LOCATION
+# Airflow home logs and database
+airflow_home/logs/
+# Python
+__pycache__/
+*.pyc
+*.pyo
