@@ -835,3 +835,4 @@ File Path                                                                       
 /home/ec2-user/environment/lab4_model_training/dags/ml_training_pipeline_v2.py                           0           0                                                            0
 ================================================================================
 [2026-04-01T02:03:57.886+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15
+[2026-04-01T02:05:56.967+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15
